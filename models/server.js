@@ -20,6 +20,7 @@ class Server {
 		this.io = require('socket.io')(this.server);
 		this.paths = {
 			auth: '/api/auth',
+			order: '/api/order',
 		};
 
 		this.connectDB();
@@ -46,6 +47,7 @@ class Server {
 
 	routes() {
 		this.app.use(this.paths.auth, require('../routes/auth.routes'));
+		this.app.use(this.paths.order, require('../routes/order.routes'));
 	}
 
 	listen() {
