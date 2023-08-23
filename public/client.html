@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<title>Menú del Restaurante</title>
+</head>
+
+<body>
+	<!-- create restaurant menu with many products and prices in table format with checkboxes-->
+
+	<section class="section is-flex" id="food-section">
+		<div class="container">
+			<h1 class="title">Comidas</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Plato</th>
+						<th>Tipo</th>
+						<th>Precio</th>
+						<th>Seleccionar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Fila 1 - Comida -->
+					<tr>
+						<td>Lasaña</td>
+						<td>Comida</td>
+						<td>$4999</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 2 - Comida -->
+					<tr>
+						<td>Pizza napolitana</td>
+						<td>Comida</td>
+						<td>$4500</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 3 - Comida -->
+					<tr>
+						<td>Hamburguesa con Papas</td>
+						<td>Comida</td>
+						<td>$3900</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 4 - Bebida -->
+					<tr>
+						<td>Fideos</td>
+						<td>Comida</td>
+						<td>$2750</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 5 - Bebida -->
+					<tr>
+						<td>Papas con cheddar</td>
+						<td>Comida</td>
+						<td>$3300</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 6 - Comida -->
+					<tr>
+						<td>Picada</td>
+						<td>Comida</td>
+						<td>$6300</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="container">
+
+			<h3 class="title">Bebidas</h3>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Producto</th>
+						<th>Tipo</th>
+						<th>Precio</th>
+						<th>Seleccionar</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Fila 1 - Comida -->
+					<tr>
+						<td>Agua</td>
+						<td>Bebida</td>
+						<td>$600</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 2 - Bebida -->
+					<tr>
+						<td>Pomelo</td>
+						<td>Bebida</td>
+						<td>$600</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 3 - Bebida -->
+					<tr>
+						<td>Sprite</td>
+						<td>Bebida</td>
+						<td>$750</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 4 - Bebida -->
+					<tr>
+						<td>Coca-Cola</td>
+						<td>Bebida</td>
+						<td>$750</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 5 - Bebida -->
+					<tr>
+						<td>Jugo de Naranja</td>
+						<td>Bebida</td>
+						<td>$700</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+					<!-- Fila 6 - Bebida -->
+					<tr>
+						<td>Cerveza (bottela)</td>
+						<td>Bebida</td>
+						<td>$900</td>
+						<td><input type="number" name="cantidad" value="0" min="0"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<div class="has-text-centered is-family-primary is-size-5 ">
+		<button class=" button is-success" style="margin-top:50px;" id="submit-button">Pedir</button>
+		<p id="total-price">Precio Total: $0</p>
+	</div>
+
+	<style>
+		td input[type="number"] {
+			display: block;
+			margin: 0 auto;
+			width: 100px;
+			text-align: center;
+		}
+	</style>
+	<script src="./js/client.js"></script>
+</body>
+
+</html>

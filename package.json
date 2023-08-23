@@ -1,0 +1,36 @@
+{
+  "name": "restaurant-orders",
+  "version": "1.0.0",
+  "description": "meet orders from different tables through a central",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolaszucca/restaurant-orders.git"
+  },
+  "keywords": [
+    "restaurant",
+    "orders",
+    "automatic",
+    "sockets"
+  ],
+  "author": "Nicolas Zuccarello <zuccarelo1@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicolaszucca/restaurant-orders/issues"
+  },
+  "homepage": "https://github.com/nicolaszucca/restaurant-orders#readme",
+  "devDependencies": {
+    "eslint": "^8.47.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mongoose": "^7.4.4",
+    "socket.io": "^4.7.2"
+  }
+}
