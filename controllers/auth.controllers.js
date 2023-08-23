@@ -1,6 +1,7 @@
 const { response } = require('express');
 
 const Table = require('../models/table');
+const { generateJWT } = require('../helpers/generate-jwt');
 
 const login = async (req, res = response) => {
 
@@ -20,14 +21,14 @@ const login = async (req, res = response) => {
 		});
 	}
 
-	// TODO: hash password
-
-
 	table = await Table.findByIdAndUpdate({ _id: table._id }, { alive: true, }, { new: true });
+	const token = await generateJWT(table._id);
+
 
 
 	return res.json({
-		table
+		table,
+		token
 	});
 };
 

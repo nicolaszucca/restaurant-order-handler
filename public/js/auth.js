@@ -23,9 +23,9 @@ btnRegister.addEventListener('click', async (e) => {
 					password
 				})
 			});
-			const { table } = await data.json();
-
-			if (table.name && table.password && table.alive) {
+			const { table, token } = await data.json();
+			if (table.name && table.password && table.alive && token) {
+				localStorage.setItem('token', token);
 
 				if (table.role === 'ADMIN') {
 					window.location.href = 'admin.html';
