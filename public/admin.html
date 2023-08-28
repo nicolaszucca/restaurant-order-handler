@@ -11,9 +11,11 @@
 <body>
 	<section class="section">
 		<div class="container">
-			<h1 class="title">Central</h1>
 
 			<table class="table">
+				<caption>
+					<h3 class="title has-text-danger" id="central">Central</h3>
+				</caption>
 				<thead>
 					<tr>
 						<th>Table</th>
@@ -22,19 +24,14 @@
 						<th>Price</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<th>1</th>
-						<td><span class="tag is-success">Alive</span></td>
-						<td><span class="tag is-danger">Milanesa:1 </span></td>
-						<td>$30</td>
-					</tr>
+				<tbody id="tbody">
+
 				</tbody>
 			</table>
 		</div>
 	</section>
 
-	<script src=" /socket.io/socket.io.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
 	<script src="./js/admin.js"></script>
 </body>
 
