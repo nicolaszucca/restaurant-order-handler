@@ -1,11 +1,29 @@
+const { validJWTSocket } = require('../middlewares/valid-jwt');
 const TableControl = require('../models/tables-control');
 
 const tableControl = new TableControl();
-const socketController = (socket) => {
+const socketController = async (socket, io) => {
 
-	socket.emit('active-tables', tableControl.tablesArr);
+	const table = await validJWTSocket(socket.handshake.headers['x-token']);
 
-	// socket.join(usuario.id);
+	if (!table) { return socket.disconnect(); }
+
+	if (table.role === 'ADMIN') {
+		tableControl.logInCentral(table.name);
+	} else {
+		tableControl.newTable(table.name, null);
+	}
+
+	io.emit('active-tables', tableControl.tablesArr);
+
+	socket.on('disconnect', () => {
+		tableControl.disconnectTable(table.name);
+		io.emit('active-tables', tableControl.tablesArr);
+	});
+
+	socket.on('order', (table, pedidos, totalPrice) => {
+		console.log('PEDIDO:', table, pedidos, totalPrice);
+	});
 
 };
 
