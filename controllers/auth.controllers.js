@@ -33,7 +33,26 @@ const login = async (req, res = response) => {
 };
 
 
+const auth = (req, res = response) => {
+
+	const { name, role } = req.table;
+	const token = req.header('x-token');
+
+	if (!name) {
+		return res.status(401).json({
+			msg: 'Table not found'
+		});
+	}
+
+	return res.json({
+		name,
+		role,
+		token
+	});
+};
+
 
 module.exports = {
 	login,
+	auth
 };
