@@ -48,16 +48,34 @@ const connectSocket = () => {
 	socket.on('active-tables', (tables) => {
 		tbody.innerHTML = '';
 
-		tables.forEach((table) => {
+		for (const table of tables) {
+			if (table.name === 'Central') continue;
+			// Construir la lista de órdenes
+			let ordersHtml = '';
+			if (table.order.length > 0) {
+				ordersHtml = '<ul>';
+
+				for (const orderItems of table.order) {
+					for (let item in orderItems) {
+						if (item === 'price') continue;
+						ordersHtml += `<li><span class="tag is-danger"style="width: 150px" id="order">${item}:${orderItems[item]}</span></li>`;
+					}
+				}
+				ordersHtml += '</ul>';
+			} else {
+				ordersHtml = '<span class="tag is-danger" id="order">No orders</span>';
+			}
+
 			const tableHtml = `
-			<tr>
-				<th><span><span id="table">${table.name}</span></th>
-				<td><span class="tag is-success" id="alive">${table.alive ? 'Alive' : 'Dead'}</span></td>
-				<td><span class="tag is-danger" id="orders">${table.orders ? table.orders : 'None'}</span></td>
-				<td><span><span id="price">$${table.price}</span></td>
-			</tr>`;
+				<tr>
+					<td><span><span id="table" class="has-text-weight-bold">${table.name}</span></td>
+					<td><span class="tag is-success" id="alive">${table.alive ? 'Alive' : 'Dead'}</span></td>
+					<td>${ordersHtml}</td>
+					<td><span><span id="price">$${table.price}</span></td>
+				</tr>`;
+
 			tbody.insertAdjacentHTML('beforeend', tableHtml);
-		});
+		}
 	});
 
 	socket.on('connect', () => {
