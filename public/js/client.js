@@ -78,7 +78,7 @@ const connectSocket = async () => {
 		}
 
 		e.preventDefault();
-		const pedidos = {};
+		const orders = {};
 		let totalPrice = 0;
 
 		cantidadInputs.forEach(input => {
@@ -88,21 +88,21 @@ const connectSocket = async () => {
 			const precio = parseFloat(input.parentNode.previousElementSibling.textContent.replace('$', ''));
 
 			if (cantidad > 0) {
-				pedidos[nombreProducto] = cantidad;
+				orders[nombreProducto] = cantidad;
 				totalPrice += precio * cantidad;
-				buyConfirm(pedidos, totalPrice);
+				buyConfirm(orders, totalPrice);
 			}
 		});
-		pedidos['price'] = totalPrice;
+		orders['price'] = totalPrice;
 
 	});
 
-	async function buyConfirm(pedidos, totalPrice) {
+	async function buyConfirm(orders, totalPrice) {
 
 		let message = '';
-		for (const producto in pedidos) {
+		for (const producto in orders) {
 			if (producto === 'price') continue;
-			message += `<p class="tag is-large">${producto}: ${pedidos[producto]}</p> <br>`;
+			message += `<p class="tag is-large">${producto}: ${orders[producto]}</p> <br>`;
 		}
 		message += `<br><p class="tag is-medium">Precio Total:<span class="tag is-medium is-info is-light">${numberFormat.format(totalPrice)}</span> </p>`;
 
@@ -123,7 +123,7 @@ const connectSocket = async () => {
 					'success',
 				);
 				//TODO: tomo la mesa.name y hago update al campo order en la dataBase (fetch para update)
-				socket.emit('order', pedidos);
+				socket.emit('order', orders);
 				/* fetch('/api/order', {
 					method: 'POST',
 					headers: {
