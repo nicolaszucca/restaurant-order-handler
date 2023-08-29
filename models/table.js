@@ -11,7 +11,7 @@ const TablesSchema = new Schema({
 		required: true
 	},
 	order: {
-		type: Object,
+		type: Array,
 		required: true
 	},
 	price: {
