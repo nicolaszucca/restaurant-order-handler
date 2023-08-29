@@ -1,7 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
-class Table {
+const Table = require('../models/table');
+
+class Tables {
 	constructor(name, order = {}) {
 		this.name = name;
 		this.order = order;
@@ -40,8 +42,16 @@ class TableControl {
 		};
 	}
 
-	get tablesArr() {
-		return Object.values(this.tables);
+	async tablesArr() {
+
+		try {
+
+			return await Table.find({ alive: true });
+
+		} catch (error) {
+
+			return error;
+		}
 
 	}
 	saveDb() {
@@ -49,7 +59,11 @@ class TableControl {
 		fs.writeFileSync(dbPath, JSON.stringify(this.toJSON));
 	}
 	newTable(name, order) {
-		this.tables[name] = new Table(name, order);
+		this.tables[name] = new Tables(name, order);
+	}
+
+	async newOrder(id, order) {
+		return await Table.findByIdAndUpdate(id, { $push: { 'order': order }, $inc: { 'price': order.price } }, { new: true });
 	}
 
 	logInCentral(name) {
