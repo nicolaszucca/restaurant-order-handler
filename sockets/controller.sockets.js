@@ -14,15 +14,23 @@ const socketController = async (socket, io) => {
 		tableControl.newTable(table.name, null);
 	}
 
-	io.emit('active-tables', tableControl.tablesArr);
+	io.emit('active-tables', await tableControl.tablesArr());
 
-	socket.on('disconnect', () => {
+	socket.on('disconnect', async () => {
 		tableControl.disconnectTable(table.name);
-		io.emit('active-tables', tableControl.tablesArr);
+		io.emit('active-tables', await tableControl.tablesArr());
 	});
 
-	socket.on('order', (table, pedidos, totalPrice) => {
-		console.log('PEDIDO:', table, pedidos, totalPrice);
+	socket.on('order', async (orders) => {
+		const tableDB = await tableControl.newOrder(table.id, orders);
+
+		if (tableDB) {
+
+			io.emit('active-tables', await tableControl.tablesArr());
+
+		} else {
+			return 'Error order';
+		}
 	});
 
 };
