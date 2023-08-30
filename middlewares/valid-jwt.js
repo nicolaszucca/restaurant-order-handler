@@ -2,6 +2,7 @@ const { response, request } = require('express');
 const jwt = require('jsonwebtoken');
 
 const Table = require('../models/table');
+const Central = require('../models/central');
 const validJWT = async (req = request, res = response, next) => {
 
 	const token = req.header('x-token');
@@ -15,12 +16,17 @@ const validJWT = async (req = request, res = response, next) => {
 
 	try {
 		const { id } = jwt.verify(token, process.env.JWT_SECRET);
+		let table;
 
-		const table = await Table.findOne({ _id: id });
+		table = await Table.findOne({ _id: id });
+
+		if (!table) {
+			table = await Central.findOne({ _id: id });
+		}
 
 		if (table) {
 
-			req.table = table;
+			req.user = table;
 			next();
 		}
 
@@ -37,16 +43,21 @@ const validJWT = async (req = request, res = response, next) => {
 const validJWTSocket = async (token) => {
 
 	try {
+		let user;
 		if (!token) { return; }
 		if (token.length < 10) { return; }
 
 		const { id } = jwt.verify(token, process.env.JWT_SECRET);
-		const table = await Table.findOne({ _id: id });
+		user = await Table.findOne({ _id: id });
 
-		if (!table) { return; }
-		if (!table.alive) { return; }
+		if (!user) {
+			user = await Central.findOne({ _id: id });
+		}
 
-		return table;
+		if (!user) { return; }
+		if (!user.alive) { return; }
+
+		return user;
 
 	} catch (error) {
 		return;
