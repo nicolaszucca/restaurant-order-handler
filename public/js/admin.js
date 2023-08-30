@@ -1,13 +1,20 @@
-//HTML REFERENCES
-
+//HTML REFEREN
 const tbody = document.querySelector('#tbody');
 const centralIsOn = document.querySelector('#central');
-
-
+let socket;
+// eslint-disable-next-line no-unused-vars
+function disconnectButtonClick(event) {
+	const tableName = event.target.closest('tr').querySelector('td:first-child').textContent;
+	socket.emit('delete', { tableName });
+}
+// eslint-disable-next-line no-unused-vars
+function connectButtonClick(event) {
+	const tableName = event.target.closest('tr').querySelector('td:first-child').textContent;
+	socket.emit('signin', { tableName });
+}
 
 const validarToken = async () => {
 	const tokenDB = localStorage.getItem('token') || '';
-
 	if (!tokenDB || tokenDB.length < 10) {
 		return window.location = '/';
 	}
@@ -39,7 +46,7 @@ const validarToken = async () => {
 
 const connectSocket = () => {
 	// eslint-disable-next-line no-undef
-	const socket = io({
+	socket = io({
 		extraHeaders: {
 			'x-token': localStorage.getItem('token')
 		}
@@ -68,11 +75,12 @@ const connectSocket = () => {
 
 			const tableHtml = `
 				<tr>
-					<td><span><span id="table" class="has-text-weight-bold">${table.name}</span></td>
-					<td><span class="tag is-success" id="alive">${table.alive ? 'Alive' : 'Dead'}</span></td>
+					<td><span id="table" class="has-text-weight-bold">${table.name}</span></td>
+					<td>${table.alive ? '<span class="tag is-success" id="alive">Alive</span>' : '<span class="tag is-danger" id="alive">Dead</span>'}</td>
 					<td>${ordersHtml}</td>
-					<td><span><span id="price">$${table.price}</span></td>
-				</tr>`;
+					<td><span id="price">$${table.price}</span></td>
+					<td>${(!table.alive ? '<button class="button is-success is-light" onclick="connectButtonClick(event)">Conectar</button>' : '<button class="button is-danger is-light" onclick="disconnectButtonClick(event)">Desconectar</button>')}</td >
+				</tr > `;
 
 			tbody.insertAdjacentHTML('beforeend', tableHtml);
 		}
