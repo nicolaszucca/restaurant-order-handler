@@ -23,14 +23,15 @@ btnRegister.addEventListener('click', async (e) => {
 					password
 				})
 			});
-			const { table, token } = await data.json();
-			if (table.name && table.password && table.alive && token) {
+			const { user, token } = await data.json();
+			if (user.name && user.password && user.alive && token) {
 				localStorage.setItem('token', token);
+				console.log(user.role);
 
-				if (table.role === 'ADMIN') {
+				if (user.role === 'ADMIN') {
 					window.location.href = 'admin.html';
 
-				} else if (table.role === 'TABLE_CLIENT') {
+				} else if (user.role === 'TABLE_CLIENT') {
 					window.location.href = 'client.html';
 
 				}
