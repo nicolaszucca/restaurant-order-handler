@@ -1,37 +1,46 @@
 const { validJWTSocket } = require('../middlewares/valid-jwt');
+
+const { validState } = require('../helpers/valid-state');
+
 const TableControl = require('../models/tables-control');
 
 const tableControl = new TableControl();
 const socketController = async (socket, io) => {
+	const user = await validJWTSocket(socket.handshake.headers['x-token']);
 
-	const table = await validJWTSocket(socket.handshake.headers['x-token']);
+	if (!user) { return socket.disconnect(); }
 
-	if (!table) { return socket.disconnect(); }
-
-	if (table.role === 'ADMIN') {
-		tableControl.logInCentral(table.name);
+	if (user.role === 'ADMIN') {
+		tableControl.logInCentral(user.name);
 	} else {
-		tableControl.newTable(table.name, null);
+		tableControl.newTable(user.name, null);
 	}
 
 	io.emit('active-tables', await tableControl.tablesArr());
 
 	socket.on('disconnect', async () => {
-		tableControl.disconnectTable(table.name);
+		tableControl.disconnectTable(user.name);
 		io.emit('active-tables', await tableControl.tablesArr());
 	});
 
 	socket.on('order', async (orders) => {
-		const tableDB = await tableControl.newOrder(table.id, orders);
+		if (await validState(user)) {
 
-		if (tableDB) {
+			const tableDB = await tableControl.newOrder(user.id, orders);
 
-			io.emit('active-tables', await tableControl.tablesArr());
+			if (tableDB) {
 
+				io.emit('active-tables', await tableControl.tablesArr());
+
+			} else {
+				return 'Error order';
+			}
 		} else {
-			return 'Error order';
+			return 'Table disconnect';
 		}
 	});
+
+
 
 };
 
