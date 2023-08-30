@@ -1,5 +1,6 @@
 const { validJWTSocket } = require('../middlewares/valid-jwt');
 
+const { validRoleAdmin } = require('../helpers/valid-rol');
 const { validState } = require('../helpers/valid-state');
 
 const TableControl = require('../models/tables-control');
@@ -40,7 +41,35 @@ const socketController = async (socket, io) => {
 		}
 	});
 
+	socket.on('signin', async ({ tableName }) => {
+		if (validRoleAdmin(user)) {
+			const tableDB = await tableControl.connectTable(tableName);
 
+			if (tableDB) {
+				io.emit('active-tables', await tableControl.tablesArr());
+			} else {
+				return 'Error in connect table';
+			}
+		} else {
+			return 'Not admin role';
+		}
+	});
+
+	socket.on('delete', async ({ tableName }) => {
+		if (validRoleAdmin(user)) {
+
+			const tableDB = await tableControl.disconnectTable(tableName);
+
+			if (tableDB) {
+				io.emit('active-tables', await tableControl.tablesArr());
+			} else {
+				return 'Error in disconnect table';
+			}
+		} else {
+			return 'Not admin role';
+		}
+
+	});
 
 };
 
