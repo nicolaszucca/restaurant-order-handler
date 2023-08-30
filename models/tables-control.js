@@ -46,7 +46,7 @@ class TableControl {
 
 		try {
 
-			return await Table.find({ alive: true });
+			return await Table.find();
 
 		} catch (error) {
 
@@ -70,8 +70,32 @@ class TableControl {
 		this.central[name] = new Central(name);
 	}
 
-	disconnectTable(name) {
-		delete this.tables[name];
+	async connectTable(name) {
+		let table;
+		try {
+			table = await Table.findOne({ name: name });
+			if (!table) { return 'Table not found'; }
+
+			table = await Table.findByIdAndUpdate({ _id: table._id }, { alive: true, }, { new: true });
+
+			return table;
+		} catch (error) {
+			return error;
+		}
+	}
+	async disconnectTable(name) {
+		let table;
+
+		try {
+			table = await Table.findOne({ name: name });
+			if (!table) { return 'Table not found'; }
+
+			table = await Table.findByIdAndUpdate({ _id: table._id }, { alive: false, }, { new: true });
+
+			return table;
+		} catch (error) {
+			return error;
+		}
 	}
 }
 
