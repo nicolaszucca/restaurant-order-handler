@@ -26,7 +26,6 @@ btnRegister.addEventListener('click', async (e) => {
 			const { user, token } = await data.json();
 			if (user.name && user.password && user.alive && token) {
 				localStorage.setItem('token', token);
-				console.log(user.role);
 
 				if (user.role === 'ADMIN') {
 					window.location.href = 'admin.html';
