@@ -32,12 +32,13 @@ const socketController = async (socket, io) => {
 			if (tableDB) {
 
 				io.emit('active-tables', await tableControl.tablesArr());
+				io.emit('order-success');
 
 			} else {
 				return 'Error order';
 			}
 		} else {
-			return 'Table disconnect';
+			return io.emit('order-denied', 'Table disconnected');
 		}
 	});
 
