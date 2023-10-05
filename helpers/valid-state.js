@@ -4,6 +4,7 @@ const validState = async (user) => {
 
 
 	const table = await Table.findOne({ name: user.name });
+	if (!table) { return false; }
 
 	if (!table.alive) {
 		return false;
